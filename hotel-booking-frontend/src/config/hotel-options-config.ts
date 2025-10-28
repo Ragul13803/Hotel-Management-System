@@ -1,4 +1,5 @@
 export const hotelTypes = [
+  "Boatel", // New type
   "Budget",
   "Boutique",
   "Luxury",
@@ -25,4 +26,8 @@ export const hotelFacilities = [
   "Outdoor Pool",
   "Spa",
   "Fitness Center",
+  // Add any unique features here
+  "Boating",
+  "Riverfront Deck",
+  "Conference Room",
 ];

@@ -55,8 +55,45 @@ type Props = {
   isLoading: boolean;
 };
 
+const DEFAULT_HOTEL_DATA: HotelFormData = {
+  name: "Estuary Dreamz BOATEL",
+  city: "Puducherry",
+  country: "India",
+  description: `No 70/28, Manavely Revenue Village, Chinna VeeramPattinam\nPuducherry, 605007\nvia Pondy-Cuddalore Road.\n\nExperience waterfront hospitality, modern amenities, and tailored guest experiences at our unique Boatel in Puducherry!`,
+  type: ["Boatel", "Luxury"],
+  pricePerNight: 25000,
+  starRating: 5,
+  facilities: [
+    "Free WiFi",
+    "Parking",
+    "Boating",
+    "Riverfront Deck",
+    "Family Rooms",
+    "Spa",
+    "Conference Room",
+  ],
+  imageUrls: [],
+  adultCount: 2,
+  childCount: 2,
+  contact: {
+    phone: "+91-9876543210",
+    email: "info@estuarydreamzboatel.com",
+    website: "https://estuarydreamzboatel.com",
+  },
+  policies: {
+    checkInTime: "2:00 PM",
+    checkOutTime: "12:00 PM",
+    cancellationPolicy: "Free cancellation until 24 hours before check-in.",
+    petPolicy: "Pets allowed with prior notice.",
+    smokingPolicy: "Non-smoking rooms only.",
+  },
+  isFeatured: true,
+};
+
 const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
-  const formMethods = useForm<HotelFormData>();
+  const formMethods = useForm<HotelFormData>({
+    defaultValues: DEFAULT_HOTEL_DATA,
+  });
   const { handleSubmit, reset } = formMethods;
 
   useEffect(() => {

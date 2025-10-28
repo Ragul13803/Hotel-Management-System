@@ -9,13 +9,14 @@ const DetailsSection = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold mb-3">Add Hotel</h1>
+      <h1 className="text-3xl font-bold mb-3">Add Hotel - Demo: Estuary Dreamz BOATEL</h1>
       <label className="text-gray-700 text-sm font-bold flex-1">
         Name
         <input
           type="text"
           className="border rounded w-full py-1 px-2 font-normal"
           {...register("name", { required: "This field is required" })}
+          placeholder="Estuary Dreamz BOATEL"
         ></input>
         {errors.name && (
           <span className="text-red-500">{errors.name.message}</span>
@@ -29,6 +30,7 @@ const DetailsSection = () => {
             type="text"
             className="border rounded w-full py-1 px-2 font-normal"
             {...register("city", { required: "This field is required" })}
+            placeholder="Puducherry"
           ></input>
           {errors.city && (
             <span className="text-red-500">{errors.city.message}</span>
@@ -40,6 +42,7 @@ const DetailsSection = () => {
             type="text"
             className="border rounded w-full py-1 px-2 font-normal"
             {...register("country", { required: "This field is required" })}
+            placeholder="India"
           ></input>
           {errors.country && (
             <span className="text-red-500">{errors.country.message}</span>
@@ -52,6 +55,7 @@ const DetailsSection = () => {
           rows={10}
           className="border rounded w-full py-1 px-2 font-normal"
           {...register("description", { required: "This field is required" })}
+          placeholder={`No 70/28, Manavely Revenue Village, Chinna VeeramPattinam\nPuducherry, 605007\nvia Pondy-Cuddalore Road`}
         ></textarea>
         {errors.description && (
           <span className="text-red-500">{errors.description.message}</span>

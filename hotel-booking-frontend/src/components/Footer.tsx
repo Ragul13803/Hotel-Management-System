@@ -8,6 +8,7 @@ import {
   Instagram,
   Linkedin,
 } from "lucide-react";
+import logo from '../../public/BOATEL.png'
 
 const Footer = () => {
   return (
@@ -18,14 +19,24 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="bg-white p-2 rounded-lg">
-                <Building2 className="w-6 h-6 text-primary-600" />
+                {/* <Building2 className="w-6 h-6 text-primary-600" /> */}
+                <img src={logo} className="h-10 w-10 rounded-lg" />
+
               </div>
-              <span className="text-2xl font-bold">MernHolidays</span>
+              <span className="text-2xl font-bold">Estuary Dreamz BOATEL</span>
             </div>
-            <p className="text-gray-300 leading-relaxed">
-              Discover amazing hotels, resorts, and accommodations worldwide.
-              Book with confidence and enjoy unforgettable experiences.
-            </p>
+            {/* <p className="text-gray-300 leading-relaxed">
+              No 70/28, Anthony Udaiyar Street,<br />
+              Manavely, ChinnaVeeramPattinam<br />
+              Puducherry, 605007<br />
+              Next to Radisson Hotel<br />
+              Near Eden Beach<br />
+              via Pondy-Cuddalore Road.<br />
+              C/o. Dr. Darshan Savery<br />
+              Ph: 9047047567 / 9047856736<br />
+              Landline: 0413 2975667<br />
+              Waterfront luxury stay, unique boatel experience.
+            </p> */}
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -154,16 +165,22 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-primary-300" />
-                <span className="text-gray-300">support@mernholidays.com</span>
+                <span className="text-gray-300">info@estuarydreamzboatel.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-primary-300" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300">9047047567 / 9047856736 / 0413-2975667</span>
               </div>
+              {/* <div className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-primary-300" />
+                <span className="text-gray-300">Landline: </span>
+              </div> */}
               <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-primary-300" />
+                <MapPin className="w-10 h-10 text-primary-300" />
                 <span className="text-gray-300">
-                  123 Travel St, Tourism City
+                  No 70/28, Anthony Udaiyar Street, Manavely, ChinnaVeeramPattinam, <br />Puducherry, 605007
+                  {/* Next to Radisson Hotel, Near Eden Beach, via Pondy-Cuddalore Road.<br />
+                  C/o. Dr. Darshan Savery */}
                 </span>
               </div>
             </div>
@@ -173,7 +190,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-primary-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-300 text-sm">
-            © 2025 MernHolidays. All rights reserved.
+            © 2025 Estuary Dreamz BOATEL. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a

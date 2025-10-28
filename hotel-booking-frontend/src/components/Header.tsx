@@ -11,6 +11,8 @@ import {
   LogIn,
 } from "lucide-react";
 
+import logo from '../../public/BOATEL.png'
+
 const Header = () => {
   const { isLoggedIn } = useAppContext();
   const search = useSearchContext();
@@ -32,22 +34,26 @@ const Header = () => {
       )} */}
       <header className="bg-gradient-to-r from-primary-600 to-primary-700 shadow-large sticky top-0 z-50">
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-3">
             {/* Logo */}
             <button
               onClick={handleLogoClick}
               className="flex items-center space-x-2 group"
             >
-              <div className="bg-white p-2 rounded-lg shadow-soft group-hover:shadow-medium transition-all duration-300">
-                <Building2 className="w-6 h-6 text-primary-600" />
+              <div className="rounded-lg shadow-soft group-hover:shadow-medium transition-all duration-300">
+                {/* <Building2 className="w-6 h-6 text-primary-600" /> */}
+                <img src={logo} className="h-12 w-12 rounded-lg" />
               </div>
               <span className="text-2xl font-bold text-white tracking-tight group-hover:text-primary-100 transition-colors">
-                MernHolidays
+                Estuary Dreamz BOATEL
               </span>
             </button>
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center space-x-1">
+              <Link className="flex items-center text-white/90 hover:text-white px-4 py-2 rounded-lg font-medium hover:bg-white/10 transition-all duration-200 group" to="/">Home</Link>
+              <a href="#about" className="flex items-center text-white/90 hover:text-white px-4 py-2 rounded-lg font-medium hover:bg-white/10 transition-all duration-200 group">About Us</a>
+              <a href="#contact" className="flex items-center text-white/90 hover:text-white px-4 py-2 rounded-lg font-medium hover:bg-white/10 transition-all duration-200 group">Contact Us</a>
               {isLoggedIn ? (
                 <>
                   {/* Analytics Dashboard Link */}
