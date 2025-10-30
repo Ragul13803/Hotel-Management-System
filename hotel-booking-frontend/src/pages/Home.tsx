@@ -11,13 +11,15 @@ const Home = () => {
     apiClient.fetchHotels()
   );
 
-  const handleSearch = (searchData: any) => {
-    console.log("Search initiated with:", searchData);
-  };
+  // const handleSearch = (searchData: any) => {
+  //   console.log("Search initiated with:", searchData);
+  // };
 
   return (
     <>
-      <Hero onSearch={handleSearch} />
+      <Hero
+      //  onSearch={handleSearch}
+        />
       <div className="">
         {/* Latest Destinations Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -44,7 +44,7 @@ const AdminReportsSection = () => {
   // --- 🧮 Derived Reports ---
   const totalRooms = data.summary.total;
   const bookedRooms = data.summary.booked;
-  const availableRooms = data.summary.available;
+  // const availableRooms = data.summary.available;
 
   const occupancyRate = ((bookedRooms / totalRooms) * 100).toFixed(1);
 

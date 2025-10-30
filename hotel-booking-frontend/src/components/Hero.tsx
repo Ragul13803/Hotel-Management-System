@@ -1,6 +1,6 @@
-import { Search, Calendar, Users, Star } from "lucide-react";
+import { Search, Calendar, Users } from "lucide-react";
 
-const Hero = ({onSearch}: any) => {
+const Hero = () => {
   return (
     <section className="relative bg-gradient-to-br from-indigo-500 via-slate-600 to-fuchsia-700 overflow-hidden">
       {/* Background Image */}

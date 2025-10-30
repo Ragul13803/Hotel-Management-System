@@ -58,7 +58,7 @@ app.options('*', cors({
 }));
 app.use(express.json());
 // Serve static files but do NOT auto-serve index.html at '/'
-app.use(express.static(path.join(__dirname, '..', 'frontend'), { index: false }));
+// app.use(express.static(path.join(__dirname, '..', 'frontend'), { index: false }));
 
 // Config
 const PORT = process.env.PORT || 3000;
@@ -485,20 +485,20 @@ app.post('/api/customer/rooms/:roomId/book', requireAuth, async (req, res) => {
   }
 });
 
-// Entry routes
-app.get('/', (req, res) => {
-  // Landing steps page
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'steps.html'));
-});
+// // Entry routes
+// app.get('/', (req, res) => {
+//   // Landing steps page
+//   res.sendFile(path.join(__dirname, '..', 'frontend', 'steps.html'));
+// });
 
-app.get('/admin', (req, res) => {
-  // Admin portal
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
-});
+// app.get('/admin', (req, res) => {
+//   // Admin portal
+//   res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+// });
 
-// Fallback to frontend (kept for direct navigation to known pages)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
-});
+// // Fallback to frontend (kept for direct navigation to known pages)
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+// });
 
 start();

@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useQueryClient } from "react-query";
-import { useMutationWithLoading } from "../hooks/useLoadingHooks";
-import * as apiClient from "../api-client";
-import useAppContext from "../hooks/useAppContext";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { useQueryClient } from "react-query";
+// import { useMutationWithLoading } from "../hooks/useLoadingHooks";
+// import * as apiClient from "../api-client";
+// import useAppContext from "../hooks/useAppContext";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, LogIn, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../components/ui/button";
@@ -27,13 +27,13 @@ export type SignInFormData = {
 };
 
 const SignIn = () => {
-  const { showToast } = useAppContext();
+  // const { showToast } = useAppContext();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const location = useLocation();
+  // const location = useLocation();
 
   const {
     register,
@@ -41,26 +41,26 @@ const SignIn = () => {
     handleSubmit,
   } = useForm<SignInFormData>();
 
-  const mutation = useMutationWithLoading(apiClient.signIn, {
-    onSuccess: async () => {
-      showToast({
-        title: "Sign In Successful",
-        description:
-          "Welcome back! You have been successfully signed in to your account.",
-        type: "SUCCESS",
-      });
-      await queryClient.invalidateQueries("validateToken");
-      navigate('/dashboard');
-    },
-    onError: (error: Error) => {
-      showToast({
-        title: "Sign In Failed",
-        description: error.message,
-        type: "ERROR",
-      });
-    },
-    loadingMessage: "Signing you in...",
-  });
+  // const mutation = useMutationWithLoading(apiClient.signIn, {
+  //   onSuccess: async () => {
+  //     showToast({
+  //       title: "Sign In Successful",
+  //       description:
+  //         "Welcome back! You have been successfully signed in to your account.",
+  //       type: "SUCCESS",
+  //     });
+  //     await queryClient.invalidateQueries("validateToken");
+  //     navigate('/dashboard');
+  //   },
+  //   onError: (error: Error) => {
+  //     showToast({
+  //       title: "Sign In Failed",
+  //       description: error.message,
+  //       type: "ERROR",
+  //     });
+  //   },
+  //   loadingMessage: "Signing you in...",
+  // });
 
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
