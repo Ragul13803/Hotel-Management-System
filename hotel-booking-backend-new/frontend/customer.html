@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer Portal</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f8; color: #111827; }
+    h1 { margin-bottom: 8px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 12px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .row { display:flex; gap:16px; flex-wrap:wrap; }
+    .col { flex:1 1 320px; }
+    input, select, button { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; }
+    button { background:#111827; color:#fff; cursor:pointer; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #fafafa; }
+    .muted { color:#6b7280; }
+    .right { text-align:right; }
+    .flex { display:flex; gap:8px; align-items:center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Customer Portal</h1>
+    <div class="muted">Total rooms 8, all AC. Complementary breakfasts. Room cost Rs. 5000/day. Conditions apply: on seasonal days price may vary.</div>
+
+    <div class="row">
+      <div class="col card">
+        <h3>Summary</h3>
+        <div id="summary">Loading...</div>
+        <div style="margin-top:8px"><button id="refreshBtn">Refresh</button></div>
+      </div>
+
+      <div class="col card">
+        <h3>Book a Room</h3>
+        <div class="flex">
+          <label>Room</label>
+          <select id="roomSelect"><option value="" disabled selected>Select room</option></select>
+          <label>Rooms to book</label>
+          <input type="number" id="roomCount" min="1" value="1" style="width:110px" />
+        </div>
+        <div class="flex" style="margin-top:8px">
+          <input type="text" id="guestName" placeholder="Guest Name" />
+          <input type="date" id="fromDate" />
+          <input type="date" id="toDate" />
+        </div>
+        <div id="priceHint" class="muted" style="margin-top:6px"></div>
+        <div id="availHint" class="muted" style="margin-top:4px"></div>
+        <div class="flex" style="margin-top:8px">
+          <input type="text" id="notes" placeholder="Notes (optional)" />
+          <button id="bookBtn" type="button">Book</button>
+        </div>
+        <div id="bookMsg" class="muted" style="margin-top:6px"></div>
+        <div id="lastBooking" class="card" style="margin-top:10px; display:none"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Rooms</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Status</th>
+            <th class="right">Type</th>
+          </tr>
+        </thead>
+        <tbody id="roomsBody"><tr><td colspan="3" class="muted">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const $ = (s)=>document.querySelector(s);
+    const API = {
+      summary: '/api/public/rooms/summary',
+      rooms: '/api/public/rooms',
+      book: (id)=>`/api/public/rooms/${id}/book`,
+      bookMultiple: '/api/public/rooms/book-multiple',
+    };
+
+    async function getJSON(url){
+      const res = await fetch(url);
+      if(!res.ok) throw new Error((await res.json().catch(()=>({error:res.statusText}))).error);
+      return res.json();
+    }
+    async function postJSON(url, body){
+      const res = await fetch(url,{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body||{}) });
+      if(!res.ok) throw new Error((await res.json().catch(()=>({error:res.statusText}))).error);
+      return res.json();
+    }
+
+    function setPriceHint(){
+      const fd=$('#fromDate').value, td=$('#toDate').value;
+      if(!fd||!td){ $('#priceHint').textContent = 'Base price: Rs. 5000/day (seasonal variations may apply)'; return; }
+      const d1=new Date(fd), d2=new Date(td);
+      const days=Math.max(1, Math.ceil((d2-d1)/(24*60*60*1000)));
+      $('#priceHint').textContent = `Estimated: Rs. ${days*5000} for ${days} day(s) (seasonal variations may apply)`;
+    }
+
+    async function loadData(){
+      try{
+        const data = await getJSON(API.summary);
+        $('#summary').textContent = `Total: ${data.summary.total} | Available: ${data.summary.available} | Booked: ${data.summary.booked}`;
+        const rooms = await getJSON(API.rooms);
+        // dropdown
+        const opts = rooms.map(r=>{
+          const id=r.number||r.id; const disabled=r.isBooked?'disabled':''; const label=r.isBooked?`Room ${id} (Booked)`: `Room ${id}`;
+          return `<option value="${id}" ${disabled}>${label}</option>`;
+        }).join('');
+        const sel=$('#roomSelect');
+        sel.innerHTML = '<option value="" disabled>Select room</option>'+opts;
+        const firstAvail = rooms.find(r=>!r.isBooked);
+        const btn=$('#bookBtn');
+        if(firstAvail){ sel.value = firstAvail.number||firstAvail.id; btn.disabled=false; } else { sel.value=''; btn.disabled=true; }
+        // hint + table
+        const availCount = rooms.filter(r=>!r.isBooked).length;
+        $('#availHint').textContent = `Available rooms: ${availCount}`;
+        $('#roomsBody').innerHTML = rooms.map(r=>`<tr><td>${r.number||r.id}</td><td>${r.isBooked?'Booked':'Available'}</td><td class="right">${r.type}</td></tr>`).join('');
+        setPriceHint();
+      }catch(e){
+        $('#summary').textContent = 'Failed to load data';
+      }
+    }
+
+    function canBook(){
+      const count = Math.max(1, Number($('#roomCount').value||'1'));
+      const guest=$('#guestName').value.trim();
+      const roomId=$('#roomSelect').value;
+      if(count>1) return !!guest; else return !!(guest && roomId);
+    }
+
+    ['change','input'].forEach(evt=>{
+      ['roomSelect','guestName','fromDate','toDate','roomCount'].forEach(id=>{
+        document.getElementById(id).addEventListener(evt, ()=>{ $('#bookBtn').disabled = !canBook(); });
+      });
+    });
+
+    $('#fromDate').addEventListener('change', setPriceHint);
+    $('#toDate').addEventListener('change', setPriceHint);
+
+    $('#bookBtn').onclick = async ()=>{
+      $('#bookMsg').textContent='';
+      const count = Math.max(1, Number($('#roomCount').value||'1'));
+      const guestName=$('#guestName').value.trim();
+      const roomId=$('#roomSelect').value;
+      const fromDate=$('#fromDate').value||undefined;
+      const toDate=$('#toDate').value||undefined;
+      const notes=$('#notes').value.trim()||undefined;
+      try{
+        if(count===1){
+          await postJSON(API.book(roomId), { guestName, fromDate, toDate, notes });
+        }else{
+          await postJSON(API.bookMultiple, { count, guestName, fromDate, toDate, notes });
+        }
+        const btn=$('#bookBtn'); btn.textContent='Booked'; btn.disabled=true;
+        const fmt=(d)=> d? new Date(d).toLocaleDateString(): '';
+        $('#lastBooking').innerHTML = `<div><strong>Last booking</strong></div><div>Guest: ${guestName}</div><div>${count===1?`Room: ${roomId}`:`Rooms: ${count}`}</div><div>From: ${fmt(fromDate)} To: ${fmt(toDate)}</div>${notes?`<div class='muted'>Notes: ${notes}</div>`:''}`;
+        $('#lastBooking').style.display='block';
+        await loadData();
+        setTimeout(()=>{ btn.textContent='Book'; btn.disabled=!canBook(); }, 2500);
+      }catch(e){ $('#bookMsg').textContent = e.message; }
+    };
+
+    document.getElementById('refreshBtn').addEventListener('click', loadData);
+    loadData();
+  </script>
+</body>
+</html>

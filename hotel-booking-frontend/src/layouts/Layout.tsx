@@ -24,7 +24,7 @@ const Layout = ({ children }: Props) => {
       {isHomePage ? (
         <div className="flex-1">{children}</div>
       ) : (
-        <div className="w-full px-2 sm:px-6 lg:px-8 py-10 flex-1">
+        <div className="flex-1">
           {children}
         </div>
       )}

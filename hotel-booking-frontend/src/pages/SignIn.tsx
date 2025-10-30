@@ -18,6 +18,8 @@ import {
 import { Label } from "../components/ui/label";
 import { Separator } from "../components/ui/separator";
 import { Badge } from "../components/ui/badge";
+import logo from '../../public/BOATEL.png'
+import { login } from "../lib/rooms-api";
 
 export type SignInFormData = {
   email: string;
@@ -48,7 +50,7 @@ const SignIn = () => {
         type: "SUCCESS",
       });
       await queryClient.invalidateQueries("validateToken");
-      navigate(location.state?.from?.pathname || "/");
+      navigate('/dashboard');
     },
     onError: (error: Error) => {
       showToast({
@@ -62,13 +64,15 @@ const SignIn = () => {
 
   const onSubmit = handleSubmit((data) => {
     setIsLoading(true);
-    mutation.mutate(data, {
-      onSettled: () => setIsLoading(false),
-    });
+    // mutation.mutate(data, {
+    //   onSettled: () => setIsLoading(false),
+    // });
+    login(data);
+    navigate('/dashboard');
   });
 
   return (
-    <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-xl w-full space-y-8">
         {/* Modern Card Container */}
         <Card className="relative overflow-hidden border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
@@ -80,7 +84,8 @@ const SignIn = () => {
           {/* Header */}
           <CardHeader className="text-center relative z-10 pb-8">
             <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-              <LogIn className="w-8 h-8 text-white" />
+              {/* <LogIn className="w-8 h-8 text-white" /> */}
+              <img src={logo} alt="logo" className="w-16 h-16 rounded-xl" />
             </div>
             <CardTitle className="text-3xl font-bold text-gray-900 mb-2">
               Welcome Back
@@ -89,7 +94,7 @@ const SignIn = () => {
               Sign in to your account to continue
             </CardDescription>
 
-            {/* Development Notice */}
+            {/* Development Notice
             {!import.meta.env.PROD && (
               <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-sm text-yellow-800">
@@ -98,7 +103,7 @@ const SignIn = () => {
                   unexpectedly, use the "Clear Auth" button in the header.
                 </p>
               </div>
-            )}
+            )} */}
           </CardHeader>
 
           {/* Form */}
@@ -118,7 +123,7 @@ const SignIn = () => {
                   </div>
                   <Input
                     id="email"
-                    type="email"
+                    type="text"
                     className="pl-10 pr-3 py-3 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
                     placeholder="Enter your email"
                     {...register("email", { required: "Email is required" })}
@@ -201,7 +206,9 @@ const SignIn = () => {
                     Signing in...
                   </div>
                 ) : (
-                  <div className="flex items-center">
+                  <div className="flex items-center" 
+                  // onClick={() => navigate('/dashboard')}
+                  >
                     <LogIn className="w-5 h-5 mr-2" />
                     Sign In
                   </div>
@@ -209,11 +216,12 @@ const SignIn = () => {
               </Button>
 
               {/* Divider */}
-              <div className="relative my-6">
+              <div className="relative my-6 flex items-center justify-center">
                 <Separator className="bg-gray-300" />
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 bg-white text-gray-500">or</span>
                 </div>
+                <Separator className="bg-gray-300" />
               </div>
 
               {/* Registration Link */}

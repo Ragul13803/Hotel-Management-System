@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f8; color: #111827; }
+    .container { max-width: 420px; margin: 10vh auto; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    h1 { margin: 0 0 4px; font-size: 22px; }
+    .muted { color: #6b7280; margin-bottom: 16px; }
+    label { display:block; margin: 10px 0 4px; color:#374151; }
+    input, button { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; }
+    button { background:#111827; color:#fff; margin-top: 14px; cursor:pointer; }
+    .links { margin-top: 12px; font-size: 14px; }
+    a { color:#2563eb; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Login</h1>
+      <div class="muted">Sign in to continue</div>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" />
+      <label for="password">Password</label>
+      <input id="password" type="password" placeholder="••••••••" />
+      <button id="loginBtn">Login</button>
+      <div id="msg" class="muted" style="margin-top:8px"></div>
+      <div class="links">No account? <a href="/signup.html">Create one</a></div>
+    </div>
+  </div>
+  <script>
+    const API = { login: '/api/auth/login' };
+    function saveToken(t, user){ localStorage.setItem('token', t); localStorage.setItem('user', JSON.stringify(user)); }
+    async function postJSON(url, body){
+      const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      if (!res.ok) throw new Error((await res.json().catch(()=>({error:res.statusText}))).error);
+      return res.json();
+    }
+    document.getElementById('loginBtn').onclick = async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('msg'); msg.textContent='';
+      try {
+        const { token, user } = await postJSON(API.login, { email, password });
+        saveToken(token, user);
+        if ((user.role||'customer') === 'admin') window.location.href = '/';
+        else window.location.href = '/customer.html';
+      } catch(e){ msg.textContent = e.message; }
+    };
+  </script>
+</body>
+</html>

@@ -33,6 +33,11 @@ const Home = () => {
 
         {/* Gallery */}
         <GallerySection />
+
+         {/* About Section - Full width band with content grid */}
+         
+
+        
         
 
         {/* About Us Section */}

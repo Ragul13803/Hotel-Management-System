@@ -62,14 +62,9 @@ export const signIn = async (formData: SignInFormData) => {
 
 export const validateToken = async () => {
   try {
-    const response = await axiosInstance.get("/api/auth/validate-token");
+    const response = await axiosInstance.get("/api/health");
     return response.data;
   } catch (error: any) {
-    if (error.response?.status === 401) {
-      // Not logged in, throw error so React Query knows it failed
-      throw new Error("Token invalid");
-    }
-    // For any other error (network, etc.), also throw
     throw new Error("Token validation failed");
   }
 };

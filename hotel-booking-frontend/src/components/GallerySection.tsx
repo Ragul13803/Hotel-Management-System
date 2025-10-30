@@ -66,14 +66,23 @@ const GallerySection = () => {
     scrollToIndex(currentIndex);
   }, [currentIndex]);
 
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
-    <div className="w-full py-10 bg-transparent">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-3xl md:text-4xl font-bold text-blue-900 my-6">
+    <div id="gallery" className="w-full py-12 bg-gradient-to-b from-transparent to-white relative overflow-hidden">
+      <img
+        src="/Boatel%20Building%20View%201.jpeg"
+        alt="Boatel background"
+        className="absolute inset-0 w-full h-full object-cover opacity-200"
+        aria-hidden
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/70" />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-4">
+        <h2 className="text-center text-3xl md:text-4xl font-extrabold text-slate-900 my-6">
           Gallery of Estuary Dreamz BOATEL
         </h2>
 
-        <div className="relative overflow-hidden rounded-3xl shadow-2xl bg-transparent">
+        <div className="relative overflow-hidden rounded-3xl bg-transparent">
           {/* Fade edges for style */}
           {/* <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10" /> */}
@@ -82,25 +91,32 @@ const GallerySection = () => {
             ref={galleryRef}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
-            className="flex gap-6 bg-transparent overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar"
+            className="flex gap-6 bg-transparent overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar p-4"
           >
             <style>{`.no-scrollbar::-webkit-scrollbar { display: none; }`}</style>
 
             {images.map((src, idx) => (
               <div
                 key={idx}
-                className="gallery-card flex-shrink-0 w-1/3 aspect-square rounded-3xl overflow-hidden shadow-xl snap-start bg-gray-100"
+                className="gallery-card flex-shrink-0 w-1/3 aspect-square rounded-3xl overflow-hidden shadow-xl snap-start bg-gray-100 transition transform hover:-translate-y-1 hover:shadow-2xl"
               >
                 <img
                   src={src}
                   alt={`Boatel Gallery ${idx + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover cursor-pointer"
                   draggable={false}
+                  onClick={()=> setLightbox(src)}
                 />
               </div>
             ))}
           </div>
         </div>
+
+        {lightbox && (
+          <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center" onClick={()=>setLightbox(null)}>
+            <img src={lightbox} className="max-w-5xl max-h-[65vh] rounded-2xl shadow-2xl" />
+          </div>
+        )}
       </div>
     </div>
   );

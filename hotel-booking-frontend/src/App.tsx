@@ -22,6 +22,8 @@ import Home from "./pages/Home";
 import ApiDocs from "./pages/ApiDocs";
 import ApiStatus from "./pages/ApiStatus";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import Dashboard from "./components/Dashboard";
+import RoomDetail from "./pages/RoomDetail";
 
 const App = () => {
   const { isLoggedIn } = useAppContext();
@@ -80,17 +82,35 @@ const App = () => {
         <Route
           path="/register"
           element={
-            <AuthLayout>
+            // <AuthLayout>
               <Register />
-            </AuthLayout>
+            // </AuthLayout>
           }
         />
         <Route
           path="/sign-in"
           element={
-            <AuthLayout>
+            // <AuthLayout>
               <SignIn />
-            </AuthLayout>
+            // </AuthLayout>
+          }
+        />
+
+        <Route
+          path="/dashboard"
+          element={
+            // <Layout>
+              <Dashboard />
+            // </Layout>
+          }
+        />
+
+        <Route
+          path="/room/:roomId"
+          element={
+            <Layout>
+              <RoomDetail />
+            </Layout>
           }
         />
 

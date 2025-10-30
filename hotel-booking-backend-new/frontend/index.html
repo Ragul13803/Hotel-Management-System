@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel Management - Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f8; color: #222; }
+    h1 { margin-bottom: 8px; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .row { display: flex; gap: 16px; flex-wrap: wrap; }
+    .col { flex: 1 1 280px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #fafafa; }
+    input, button { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; }
+    button { background: #111827; color: #fff; cursor: pointer; }
+    button.secondary { background: #374151; }
+    button:disabled { background: #9ca3af; cursor: not-allowed; }
+    .muted { color: #6b7280; }
+    .flex { display: flex; gap: 8px; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Hotel Management - Admin</h1>
+  <div class="muted">All rooms are AC. Complementary breakfasts. Seasonal days price may vary.</div>
+
+  <div class="row">
+    <div class="col card" id="summaryCard">
+      <h3>Summary</h3>
+      <div id="summary">Loading...</div>
+      <div class="flex" style="margin-top:8px">
+        <button id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+
+    <div class="col card">
+      <h3>Book A Specific Room</h3>
+      <form id="bookForm">
+        <div class="flex">
+          <select id="roomSelect"></select>
+          <input type="text" id="guestName" placeholder="Guest Name" required />
+          <input type="date" id="fromDate" />
+          <input type="date" id="toDate" />
+          <input type="number" id="price" placeholder="Price" min="0" />
+        </div>
+        <div style="margin-top:8px" class="flex">
+          <input type="text" id="notes" placeholder="Notes" />
+          <button type="submit">Book</button>
+        </div>
+      </form>
+      <div id="bookMsg" class="muted" style="margin-top:6px"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Rooms</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Room No</th>
+          <th>Room ID</th>
+          <th>Status</th>
+          <th>Guest</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="roomsBody">
+        <tr><td colspan="7" class="muted">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Rooms (Card View)</h3>
+    <div id="roomsCards" class="row">
+      <div class="muted">Loading...</div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+
+    async function fetchJSON(url, opts={}) {
+      const res = await fetch(url, { headers: { 'Content-Type': 'application/json' }, ...opts });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error || 'Request failed');
+      }
+      return res.json();
+    }
+
+    async function loadSummary() {
+      try {
+        const data = await fetchJSON('/api/rooms/summary');
+        const s = data.summary;
+        $('#summary').textContent = `Total: ${s.total} | Available: ${s.available} | Booked: ${s.booked}`;
+      } catch (e) {
+        $('#summary').textContent = 'Failed to load summary';
+      }
+    }
+
+    function fmtDate(d) { if (!d) return ''; return new Date(d).toLocaleDateString(); }
+
+    function populateAvailableRooms(rooms){
+      const select = $('#roomSelect');
+      const available = rooms.filter(r => !r.isBooked);
+      if (!available.length) { select.innerHTML = '<option disabled selected>No available rooms</option>'; return; }
+      select.innerHTML = available.map(r => `<option value="${r.number}">Room ${r.number} - ${r._id?.substring(0,6) || ''}</option>`).join('');
+    }
+
+    function renderCards(rooms){
+      const container = document.getElementById('roomsCards');
+      if (!rooms.length){ container.innerHTML = '<div class="muted">No rooms</div>'; return; }
+      container.innerHTML = rooms.map(r=>`
+        <div class="col">
+          <div class="card" style="margin:0">
+            <div class="flex" style="justify-content:space-between">
+              <div><strong>Room ${r.number}</strong></div>
+              <div class="muted">${r.type}</div>
+            </div>
+            <div style="margin-top:6px">Status: <strong>${r.isBooked ? 'Booked' : 'Available'}</strong></div>
+            ${r.isBooked ? `
+              <div class="muted" style="margin-top:6px">
+                Guest: ${r.booking?.guestName || ''}<br/>
+                From: ${fmtDate(r.booking?.fromDate)} To: ${fmtDate(r.booking?.toDate)}<br/>
+                ${r.booking?.price ? `Price: ${r.booking.price}` : ''}
+              </div>
+            `:''}
+            <div class="flex" style="margin-top:10px">
+              ${r.isBooked ? `
+                <button class="secondary" onclick="openUpdate(${r.number})">Update</button>
+                <button onclick="checkout(${r.number})">Checkout</button>
+              ` : `
+                <button disabled class="secondary" title="Use form above to book">Book</button>
+              `}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function loadRooms() {
+      const body = $('#roomsBody');
+      body.innerHTML = '<tr><td colspan="7" class="muted">Loading...</td></tr>';
+      try {
+        const rooms = await fetchJSON('/api/rooms');
+        if (!rooms.length) { body.innerHTML = '<tr><td colspan="7" class="muted">No rooms</td></tr>'; return; }
+        populateAvailableRooms(rooms);
+        body.innerHTML = rooms.map(r => `
+          <tr>
+            <td>${r.number}</td>
+            <td>${r._id}</td>
+            <td>${r.isBooked ? 'Booked' : 'Available'}</td>
+            <td>${r.booking?.guestName || ''}</td>
+            <td>${fmtDate(r.booking?.fromDate)}</td>
+            <td>${fmtDate(r.booking?.toDate)}</td>
+            <td>${r.booking?.price ?? ''}</td>
+            <td>
+              ${r.isBooked ? `
+                <button class=\"secondary\" onclick=\"openUpdate(${r.number})\">Update</button>
+                <button onclick=\"checkout(${r.number})\">Checkout</button>
+              ` : '<span class=\"muted\">—</span>'}
+            </td>
+          </tr>
+        `).join('');
+        renderCards(rooms);
+      } catch (e) {
+        body.innerHTML = `<tr><td colspan=\"7\" class=\"muted\">Failed: ${e.message}</td></tr>`;
+        document.getElementById('roomsCards').innerHTML = `<div class=\"muted\">Failed: ${e.message}</div>`;
+      }
+    }
+
+    async function book(e) {
+      e.preventDefault();
+      $('#bookMsg').textContent = '';
+      const roomId = $('#roomSelect').value;
+      const payload = {
+        guestName: $('#guestName').value.trim(),
+        fromDate: $('#fromDate').value || undefined,
+        toDate: $('#toDate').value || undefined,
+        price: $('#price').value ? Number($('#price').value) : undefined,
+        notes: $('#notes').value.trim() || undefined,
+      };
+      if (!roomId) { $('#bookMsg').textContent = 'Select a room'; return; }
+      if (!payload.guestName) { $('#bookMsg').textContent = 'Guest name required'; return; }
+      try {
+        await fetchJSON(`/api/rooms/${roomId}/book`, { method: 'POST', body: JSON.stringify(payload) });
+        $('#bookForm').reset();
+        $('#bookMsg').textContent = 'Booked successfully';
+        loadSummary();
+        loadRooms();
+      } catch (e) {
+        $('#bookMsg').textContent = e.message;
+      }
+    }
+
+    window.openUpdate = async function(roomNumber) {
+      const guestName = prompt('Guest name (leave empty to keep)');
+      const fromDate = prompt('From date (YYYY-MM-DD)');
+      const toDate = prompt('To date (YYYY-MM-DD)');
+      const price = prompt('Price');
+      const notes = prompt('Notes');
+      const updates = {};
+      if (guestName) updates.guestName = guestName;
+      if (fromDate) updates.fromDate = fromDate;
+      if (toDate) updates.toDate = toDate;
+      if (price) updates.price = Number(price);
+      if (notes) updates.notes = notes;
+      try {
+        await fetchJSON(`/api/rooms/${roomNumber}`, { method: 'PUT', body: JSON.stringify(updates) });
+        loadRooms();
+      } catch (e) {
+        alert('Update failed: ' + e.message);
+      }
+    }
+
+    window.checkout = async function(roomNumber) {
+      if (!confirm('Confirm checkout?')) return;
+      try {
+        await fetchJSON(`/api/rooms/${roomNumber}/checkout`, { method: 'DELETE' });
+        loadSummary();
+        loadRooms();
+      } catch (e) {
+        alert('Checkout failed: ' + e.message);
+      }
+    }
+
+    $('#bookForm').addEventListener('submit', book);
+    $('#refreshBtn').addEventListener('click', () => { loadSummary(); loadRooms(); });
+
+    loadSummary();
+    loadRooms();
+  </script>
+</body>
+</html>

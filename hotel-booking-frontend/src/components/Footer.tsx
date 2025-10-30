@@ -6,6 +6,7 @@ import {
   Twitter,
   Instagram,
   Linkedin,
+  
 } from "lucide-react";
 import logo from '../../public/BOATEL.png'
 
@@ -17,11 +18,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="bg-white p-2 rounded-lg">
+              {/* <div className="bg-white p-2 rounded-lg"> */}
                 {/* <Building2 className="w-6 h-6 text-primary-600" /> */}
-                <img src={logo} className="h-10 w-10 rounded-lg" />
+                <img src={logo} className="h-14 w-14 rounded-lg" />
 
-              </div>
+              {/* </div> */}
               <span className="text-2xl font-bold">Estuary Dreamz BOATEL</span>
             </div>
             {/* <p className="text-gray-300 leading-relaxed">
