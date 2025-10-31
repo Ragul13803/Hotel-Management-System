@@ -22,43 +22,43 @@ const Hero = () => {
 
       <div className="w-full px-4 sm:px-6 lg:px-8 pt-8 pb-8 relative">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-white m-4 leading-tight tracking-tight">
             Welcome to Estuary Dreamz BOATEL
-            <span className="text-2xl md:text-3xl block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent my-8">
-              Puducherry's Unique Waterfront Boatel
+            <span className="text-2xl md:text-3xl block bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text italic text-transparent my-10">
+              Puducherry's Unique Water-front Boatel. Book Now!
             </span>
           </h1>
          
-
-          {/* <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 my-2 shadow-xl ring-1 ring-indigo-500/20">
-            <Star className="w-5 h-5 text-yellow-400 mr-2" />
-            <span className="text-white/90 font-medium">
-              Trusted by 10,000+ travelers
-            </span>
-          </div> */}
-
           {/* Feature Icons */}
-          <div className="flex justify-center items-center space-x-8 my-4 md:my-6">
-            <div className="flex items-center text-white/80">
-              <Search className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium">Smart Search</span>
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 my-4 md:my-6">
+            {/* Smart Search */}
+            <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 shadow-lg ring-1 ring-indigo-500/20 min-w-[180px] justify-center">
+              <Search className="w-5 h-5 text-yellow-400 mr-2 shrink-0" />
+              <span className="text-white/90 font-medium text-sm sm:text-base">
+                Smart Search
+              </span>
             </div>
-            {/* <div className="flex items-center text-white/80">
-              <MapPin className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium">Global Destinations</span>
-            </div> */}
-            <div className="flex items-center text-white/80">
-              <Calendar className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium">Flexible Booking</span>
+
+            {/* Flexible Booking */}
+            <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 shadow-lg ring-1 ring-indigo-500/20 min-w-[180px] justify-center">
+              <Calendar className="w-5 h-5 text-yellow-400 mr-2 shrink-0" />
+              <span className="text-white/90 font-medium text-sm sm:text-base">
+                Flexible Booking
+              </span>
             </div>
-            <div className="flex items-center text-white/80">
-              <Users className="w-5 h-5 mr-2" />
-              <span className="text-sm font-medium">24/7 Support</span>
+
+            {/* 24/7 Support */}
+            <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 shadow-lg ring-1 ring-indigo-500/20 min-w-[180px] justify-center">
+              <Users className="w-5 h-5 text-yellow-400 mr-2 shrink-0" />
+              <span className="text-white/90 font-medium text-sm sm:text-base">
+                24/7 Support
+              </span>
             </div>
           </div>
-          <h3 className="text-xl md:text-5xl font-extrabold text-orange-300 my-6 leading-tight">
+
+          {/* <h3 className="text-xl md:text-5xl font-extrabold text-orange-300 my-6 leading-tight">
             Book your water-front stay today
-          </h3>
+          </h3> */}
           {/* <div className="mt-4 flex items-center justify-center gap-4">
             <a href="/search" className="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-semibold shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">Search Rooms</a>
             <a href="#gallery" className="px-5 py-2.5 rounded-xl border border-white/40 text-white font-semibold hover:bg-white/10 transition">View Gallery</a>
@@ -88,7 +88,7 @@ const Hero = () => {
 
         {/* Why Stay Section */}
         <section className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-          <div className="p-6 grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+          <div className="p-6 grid lg:grid-cols-4 md:grid-cols-2 gap-16">
             {/* 1. Beach Walks & Relaxation */}
             <div className="flex flex-col items-center text-center bg-white p-10 rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 mb-3 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
