@@ -25,7 +25,7 @@ export type RoomsSummary = {
   }>;
 };
 
-const BASE = 'http://localhost:3000';
+const BASE = 'https://hotel-management-system-backend-five.vercel.app';
 
 async function json<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

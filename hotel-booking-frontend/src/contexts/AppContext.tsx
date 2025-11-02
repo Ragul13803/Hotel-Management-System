@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import { useQuery } from "react-query";
-import * as apiClient from "../api-client";
+// import * as apiClient from "../api-client";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { useToast } from "../hooks/use-toast";
 
@@ -59,7 +59,7 @@ export const AppContextProvider = ({
   // Always run validation query - let it handle token checking internally
   const { isError, isLoading, data } = useQuery(
     "validateToken",
-    apiClient.validateToken,
+    // apiClient.validateToken,
     {
       retry: false,
       refetchOnWindowFocus: false, // Don't refetch on focus

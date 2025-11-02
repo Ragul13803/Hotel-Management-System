@@ -10,20 +10,9 @@ import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "./components/ui/toaster";
 import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
-import AddHotel from "./pages/AddHotel";
 import useAppContext from "./hooks/useAppContext";
-import MyHotels from "./pages/MyHotels";
-import EditHotel from "./pages/EditHotel";
-import Search from "./pages/Search";
-import Detail from "./pages/Detail";
-import Booking from "./pages/Booking";
-import MyBookings from "./pages/MyBookings";
 import Home from "./pages/Home";
-import ApiDocs from "./pages/ApiDocs";
-import ApiStatus from "./pages/ApiStatus";
-import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import Dashboard from "./components/Dashboard";
-import RoomDetail from "./pages/RoomDetail";
 
 const App = () => {
   const { isLoggedIn } = useAppContext();
@@ -39,46 +28,46 @@ const App = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/search"
           element={
             <Layout>
               <Search />
             </Layout>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/detail/:hotelId"
           element={
             <Layout>
               <Detail />
             </Layout>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/api-docs"
           element={
             <Layout>
               <ApiDocs />
             </Layout>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/api-status"
           element={
             <Layout>
               <ApiStatus />
             </Layout>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/analytics"
           element={
             <Layout>
               <AnalyticsDashboard />
             </Layout>
           }
-        />
+        /> */}
         <Route
           path="/register"
           element={
@@ -105,58 +94,58 @@ const App = () => {
           }
         />
 
-        <Route
+        {/* <Route
           path="/room/:roomId"
           element={
             <Layout>
               <RoomDetail />
             </Layout>
           }
-        />
+        /> */}
 
         {isLoggedIn && (
           <>
-            <Route
+            {/* <Route
               path="/hotel/:hotelId/booking"
               element={
                 <Layout>
                   <Booking />
                 </Layout>
               }
-            />
+            /> */}
 
-            <Route
+            {/* <Route
               path="/add-hotel"
               element={
                 <Layout>
                   <AddHotel />
                 </Layout>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/edit-hotel/:hotelId"
               element={
                 <Layout>
                   <EditHotel />
                 </Layout>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/my-hotels"
               element={
                 <Layout>
                   <MyHotels />
                 </Layout>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/my-bookings"
               element={
                 <Layout>
                   <MyBookings />
                 </Layout>
               }
-            />
+            /> */}
           </>
         )}
         <Route path="*" element={<Navigate to="/" />} />

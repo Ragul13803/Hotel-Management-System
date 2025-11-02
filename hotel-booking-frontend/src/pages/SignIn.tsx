@@ -62,13 +62,26 @@ const SignIn = () => {
   //   loadingMessage: "Signing you in...",
   // });
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit( async (data) => {
     setIsLoading(true);
     // mutation.mutate(data, {
     //   onSettled: () => setIsLoading(false),
     // });
-    login(data);
-    navigate('/dashboard');
+
+    try{
+      const response =await login(data)
+      console.log(response);
+      
+      if(response){
+        navigate('/dashboard');
+      }
+    }catch(e){
+      if(e){
+        navigate('/')
+      }
+    }
+    
+    
   });
 
   return (
@@ -198,7 +211,7 @@ const SignIn = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 px-4 rounded-md text-white bg-gradient-to-r from-[#0a1f3d] via-[#4db6ac] to-[#c8b39d] hover:from-primary-700 hover:to-primary-800 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="w-full py-3 px-4 rounded-md text-white bg-gradient-to-r from-[#0a1f3d] via-[#4db6ac] to-[#c8b39d] transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center">

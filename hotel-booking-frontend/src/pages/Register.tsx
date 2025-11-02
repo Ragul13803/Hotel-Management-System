@@ -103,7 +103,7 @@ const Register = () => {
             </CardDescription>
 
             {/* Development Notice */}
-            {!import.meta.env.PROD && (
+            {/* {!import.meta.env.PROD && (
               <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <p className="text-sm text-yellow-800">
                   <strong>Development Note:</strong> Authentication state
@@ -111,7 +111,7 @@ const Register = () => {
                   unexpectedly, use the "Clear Auth" button in the header.
                 </p>
               </div>
-            )}
+            )} */}
           </CardHeader>
 
           {/* Form */}
@@ -344,7 +344,7 @@ const Register = () => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 px-4 rounded-md text-white bg-gradient-to-r from-[#0a1f3d] via-[#4db6ac] to-[#c8b39d] hover:from-primary-700 hover:to-primary-800 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="w-full py-3 px-4 rounded-md text-white bg-gradient-to-r from-[#0a1f3d] via-[#4db6ac] to-[#c8b39d] transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center">

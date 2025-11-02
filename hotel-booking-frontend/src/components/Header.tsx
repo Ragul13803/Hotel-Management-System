@@ -65,7 +65,7 @@ const Header = () => {
                   <SignOutButton />
                 </>
               ) : (
-                <Link to="/sign-in" className="flex items-center bg-white text-primary-600 px-6 py-2 rounded-lg font-semibold hover:bg-primary-50 hover:shadow-medium transition-all duration-200 group">
+                <Link to="/sign-in" className="flex items-center bg-[#0a1f3d] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-200 group">
                   <LogIn className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                   Sign In
                 </Link>

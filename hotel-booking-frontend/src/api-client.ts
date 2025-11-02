@@ -1,18 +1,11 @@
 import axiosInstance from "./lib/api-client";
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
-import {
-  HotelSearchResponse,
-  HotelType,
-  PaymentIntentResponse,
-  UserType,
-  HotelWithBookingsType,
-  BookingType,
-} from "../../shared/types";
+
 import { BookingFormData } from "./forms/BookingForm/BookingForm";
 import { queryClient } from "./main";
 
-export const fetchCurrentUser = async (): Promise<UserType> => {
+export const fetchCurrentUser = async (): Promise<any> => {
   const response = await axiosInstance.get("/api/users/me");
   return response.data;
 };
@@ -102,12 +95,12 @@ export const addMyHotel = async (hotelFormData: FormData) => {
   return response.data;
 };
 
-export const fetchMyHotels = async (): Promise<HotelType[]> => {
+export const fetchMyHotels = async (): Promise<any[]> => {
   const response = await axiosInstance.get("/api/my-hotels");
   return response.data;
 };
 
-export const fetchMyHotelById = async (hotelId: string): Promise<HotelType> => {
+export const fetchMyHotelById = async (hotelId: string): Promise<any> => {
   const response = await axiosInstance.get(`/api/my-hotels/${hotelId}`);
   return response.data;
 };
@@ -142,7 +135,7 @@ export type SearchParams = {
 
 export const searchHotels = async (
   searchParams: SearchParams
-): Promise<HotelSearchResponse> => {
+): Promise<any> => {
   const queryParams = new URLSearchParams();
 
   // Only add destination if it's not empty
@@ -169,12 +162,12 @@ export const searchHotels = async (
   return response.data;
 };
 
-export const fetchHotels = async (): Promise<HotelType[]> => {
+export const fetchHotels = async (): Promise<any[]> => {
   const response = await axiosInstance.get("/api/hotels");
   return response.data;
 };
 
-export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
+export const fetchHotelById = async (hotelId: string): Promise<any> => {
   const response = await axiosInstance.get(`/api/hotels/${hotelId}`);
   return response.data;
 };
@@ -182,7 +175,7 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
 export const createPaymentIntent = async (
   hotelId: string,
   numberOfNights: string
-): Promise<PaymentIntentResponse> => {
+): Promise<any> => {
   const response = await axiosInstance.post(
     `/api/hotels/${hotelId}/bookings/payment-intent`,
     { numberOfNights }
@@ -198,14 +191,14 @@ export const createRoomBooking = async (formData: BookingFormData) => {
   return response.data;
 };
 
-export const fetchMyBookings = async (): Promise<HotelWithBookingsType[]> => {
+export const fetchMyBookings = async (): Promise<any[]> => {
   const response = await axiosInstance.get("/api/my-bookings");
   return response.data;
 };
 
 export const fetchHotelBookings = async (
   hotelId: string
-): Promise<BookingType[]> => {
+): Promise<any[]> => {
   const response = await axiosInstance.get(`/api/bookings/hotel/${hotelId}`);
   return response.data;
 };
