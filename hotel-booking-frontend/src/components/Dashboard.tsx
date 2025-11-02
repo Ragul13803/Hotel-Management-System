@@ -12,8 +12,6 @@ import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
-  // DialogHeader,
-  // DialogTitle,
 } from "../components/ui/dialog";
 import BookRoomForm from "./BookRoomForm"; // ✅ Import your existing form
 import {
@@ -53,7 +51,6 @@ const Dashboard = () => {
 
   const handleBookOrUpdate = async (formData: any) => {
     try {
-      // Determine target room id: prefer selected row; fallback to form's roomId
       const targetRoomId: number | string | undefined =
         selectedRoom?.id ?? formData?.roomId;
 
@@ -81,7 +78,6 @@ const Dashboard = () => {
   const handleCheckout = async (roomId: number) => {
     try {
       await checkoutRoom(roomId);
-
       showToast(`Room ${roomId} checked out successfully!`, "success");
       fetchData();
     } catch {
@@ -102,8 +98,7 @@ const Dashboard = () => {
     .filter((r) => r.isBooked && r.booking?.price)
     .reduce((sum, r) => sum + (r.booking?.price || 0), 0);
 
-  const avgRoomPrice =
-    booked > 0 ? (totalRevenue / booked).toFixed(2) : "0.00";
+  const avgRoomPrice = booked > 0 ? (totalRevenue / booked).toFixed(2) : "0.00";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-12 relative overflow-hidden">
@@ -127,7 +122,8 @@ const Dashboard = () => {
       )}
 
       <div className="relative z-20 max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between mb-10">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
           <h1 className="text-4xl font-extrabold text-white tracking-tight">
             Admin Dashboard
           </h1>
@@ -160,19 +156,18 @@ const Dashboard = () => {
         </div>
 
         {/* Room Details Table */}
-        <div className="p-6 bg-white/10 rounded-2xl backdrop-blur shadow-xl ring-1 ring-indigo-400/20">
-          <h2 className="text-xl font-semibold text-white mb-4">
-            Room Details
-          </h2>
-          <table className="w-full text-left text-gray-300 text-sm">
+        <div className="p-6 bg-white/10 rounded-2xl backdrop-blur shadow-xl ring-1 ring-indigo-400/20 overflow-x-auto">
+          <h2 className="text-xl font-semibold text-white mb-4">Room Details</h2>
+
+          <table className="min-w-full text-left text-gray-300 text-sm">
             <thead>
               <tr className="border-b border-white/10">
                 <th className="pb-2">Room</th>
                 <th className="pb-2">Status</th>
-                <th className="pb-2">Guest</th>
-                <th className="pb-2">Check-in</th>
-                <th className="pb-2">Check-out</th>
-                <th className="pb-2">Price</th>
+                <th className="pb-2 hidden sm:table-cell">Guest</th>
+                <th className="pb-2 hidden md:table-cell">Check-in</th>
+                <th className="pb-2 hidden md:table-cell">Check-out</th>
+                <th className="pb-2 hidden lg:table-cell">Price</th>
                 <th className="pb-2 text-right">Action</th>
               </tr>
             </thead>
@@ -190,18 +185,18 @@ const Dashboard = () => {
                       <span className="text-green-400">Available</span>
                     )}
                   </td>
-                  <td className="py-2">{room.booking?.guestName || "-"}</td>
-                  <td className="py-2">
+                  <td className="py-2 hidden sm:table-cell">{room.booking?.guestName || "-"}</td>
+                  <td className="py-2 hidden md:table-cell">
                     {room.booking?.fromDate
                       ? new Date(room.booking.fromDate).toLocaleDateString()
                       : "-"}
                   </td>
-                  <td className="py-2">
+                  <td className="py-2 hidden md:table-cell">
                     {room.booking?.toDate
                       ? new Date(room.booking.toDate).toLocaleDateString()
                       : "-"}
                   </td>
-                  <td className="py-2">₹{room.booking?.price || "-"}</td>
+                  <td className="py-2 hidden lg:table-cell">{room.booking?.price && '₹ '}{room.booking?.price || "-"}</td>
                   <td className="py-2 text-right">
                     {room.isBooked ? (
                       <div className="flex justify-end gap-2">
@@ -246,15 +241,8 @@ const Dashboard = () => {
       </div>
 
       {/* Popup Dialog */}
-      <Dialog open={open} onOpenChange={setOpen} >
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-xl p-2">
-          {/* <DialogHeader>
-            <DialogTitle>
-              {mode === "update"
-                ? `Update Room ${selectedRoom?.number}`
-                : `Book Room ${selectedRoom?.number || ""}`}
-            </DialogTitle>
-          </DialogHeader> */}
           <BookRoomForm
             existingData={selectedRoom ? { ...selectedRoom.booking, roomId: selectedRoom.id } : undefined}
             mode={mode}
@@ -267,7 +255,7 @@ const Dashboard = () => {
   );
 };
 
-// Reusable small stat cards
+// Reusable Stat Cards
 const StatCard = ({ title, value, icon: Icon, color }: any) => (
   <div className="p-6 bg-white/10 rounded-2xl backdrop-blur shadow-xl ring-1 ring-white/10">
     <div className="flex items-center justify-between mb-3">
