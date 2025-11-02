@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { HotelFormData } from "./ManageHotelForm";
+// import { HotelFormData } from "./ManageHotelForm";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
 import { Button } from "../../components/ui/button";
@@ -19,25 +19,25 @@ const ImagesSection = () => {
     setValue,
     setError,
     clearErrors,
-  } = useFormContext<HotelFormData>();
+  } = useFormContext();
 
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const existingImageUrls = watch("imageUrls");
 
   // Initialize with existing images
-  useEffect(() => {
-    if (existingImageUrls && existingImageUrls.length > 0) {
-      const existingPreviews: ImagePreview[] = existingImageUrls.map(
-        (url, index) => ({
-          id: `existing-${index}`,
-          url,
-          isExisting: true,
-        })
-      );
-      setImagePreviews(existingPreviews);
-    }
-  }, [existingImageUrls]);
+  // useEffect(() => {
+  //   if (existingImageUrls && existingImageUrls.length > 0) {
+  //     const existingPreviews: ImagePreview[] = existingImageUrls.map(
+  //       (url, index) => ({
+  //         id: `existing-${index}`,
+  //         url,
+  //         isExisting: true,
+  //       })
+  //     );
+  //     setImagePreviews(existingPreviews);
+  //   }
+  // }, [existingImageUrls]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -55,13 +55,13 @@ const ImagesSection = () => {
     const updatedPreviews = [...imagePreviews, ...newPreviews];
 
     // Update form values
-    const newFiles = Array.from(files);
-    const currentFiles = Array.from(watch("imageFiles") || []);
-    const allFiles = [...currentFiles, ...newFiles];
+    // const newFiles = Array.from(files);
+    // const currentFiles = Array.from(watch("imageFiles") || []);
+    // const allFiles = [...currentFiles, ...newFiles];
 
     // Create a new FileList-like object
     const dataTransfer = new DataTransfer();
-    allFiles.forEach((file) => dataTransfer.items.add(file));
+    // allFiles.forEach((file) => dataTransfer.items.add(file));
 
     setValue("imageFiles", dataTransfer.files);
     setImagePreviews(updatedPreviews);
@@ -77,7 +77,7 @@ const ImagesSection = () => {
     if (imageToDelete.isExisting) {
       // Remove from existing imageUrls
       const updatedUrls = existingImageUrls.filter(
-        (url) => url !== imageToDelete.url
+        (url: any) => url !== imageToDelete.url
       );
       setValue("imageUrls", updatedUrls);
     } else {
@@ -91,7 +91,7 @@ const ImagesSection = () => {
       });
 
       const dataTransfer = new DataTransfer();
-      updatedFiles.forEach((file) => dataTransfer.items.add(file));
+      updatedFiles.forEach((file: any) => dataTransfer.items.add(file));
       setValue(
         "imageFiles",
         updatedFiles.length > 0 ? dataTransfer.files : undefined
@@ -225,7 +225,7 @@ const ImagesSection = () => {
         {/* Error Message */}
         {errors.imageFiles && (
           <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg">
-            {errors.imageFiles.message}
+            {/* {errors.imageFiles.message} */}
           </div>
         )}
       </div>

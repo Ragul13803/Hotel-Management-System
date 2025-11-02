@@ -1,8 +1,5 @@
-import { useFormContext } from "react-hook-form";
-import { HotelFormData } from "./ManageHotelForm";
 
 const ContactSection = () => {
-  const { register } = useFormContext<HotelFormData>();
 
   return (
     <div className="flex flex-col gap-4">
@@ -13,7 +10,6 @@ const ContactSection = () => {
           <input
             type="text"
             className="border rounded w-full py-2 px-3 font-normal"
-            {...register("contact.phone")}
           />
         </label>
         <label className="text-gray-700 text-sm font-bold flex-1">
@@ -21,7 +17,6 @@ const ContactSection = () => {
           <input
             type="email"
             className="border rounded w-full py-2 px-3 font-normal"
-            {...register("contact.email")}
           />
         </label>
         <label className="text-gray-700 text-sm font-bold flex-1">
@@ -29,7 +24,6 @@ const ContactSection = () => {
           <input
             type="url"
             className="border rounded w-full py-2 px-3 font-normal"
-            {...register("contact.website")}
           />
         </label>
       </div>

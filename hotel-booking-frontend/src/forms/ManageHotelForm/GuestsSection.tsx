@@ -1,11 +1,11 @@
 import { useFormContext } from "react-hook-form";
-import { HotelFormData } from "./ManageHotelForm";
+// import { HotelFormData } from "./ManageHotelForm";
 
 const GuestsSection = () => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<HotelFormData>();
+  } = useFormContext();
 
   return (
     <div>
@@ -23,7 +23,7 @@ const GuestsSection = () => {
           />
           {errors.adultCount?.message && (
             <span className="text-red-500 text-sm fold-bold">
-              {errors.adultCount?.message}
+              {/* {errors.adultCount?.message} */}
             </span>
           )}
         </label>
@@ -39,7 +39,7 @@ const GuestsSection = () => {
           />
           {errors.childCount?.message && (
             <span className="text-red-500 text-sm fold-bold">
-              {errors.childCount?.message}
+              {/* {errors.childCount?.message} */}
             </span>
           )}
         </label>

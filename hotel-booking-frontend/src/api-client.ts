@@ -2,7 +2,7 @@ import axiosInstance from "./lib/api-client";
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
 
-import { BookingFormData } from "./forms/BookingForm/BookingForm";
+// import { BookingFormData } from "./forms/BookingForm/BookingForm";
 import { queryClient } from "./main";
 
 export const fetchCurrentUser = async (): Promise<any> => {
@@ -183,13 +183,13 @@ export const createPaymentIntent = async (
   return response.data;
 };
 
-export const createRoomBooking = async (formData: BookingFormData) => {
-  const response = await axiosInstance.post(
-    `/api/hotels/${formData.hotelId}/bookings`,
-    formData
-  );
-  return response.data;
-};
+// export const createRoomBooking = async (formData: BookingFormData) => {
+//   const response = await axiosInstance.post(
+//     `/api/hotels/${formData.hotelId}/bookings`,
+//     formData
+//   );
+//   return response.data;
+// };
 
 export const fetchMyBookings = async (): Promise<any[]> => {
   const response = await axiosInstance.get("/api/my-bookings");

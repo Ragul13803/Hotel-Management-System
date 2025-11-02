@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { hotelTypes } from "../../config/hotel-options-config";
-import { HotelFormData } from "./ManageHotelForm";
+// import { HotelFormData } from "./ManageHotelForm";
 
 const TypeSection = () => {
   const {
@@ -8,7 +8,7 @@ const TypeSection = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext<HotelFormData>();
+  } = useFormContext();
 
   const rawType = watch("type") as string | string[] | undefined;
   const typeWatch: string[] = Array.isArray(rawType)
@@ -55,7 +55,7 @@ const TypeSection = () => {
       </div>
       {errors.type && (
         <span className="text-red-500 text-sm font-bold">
-          {errors.type.message}
+          {/* {errors.type.message} */}
         </span>
       )}
     </div>

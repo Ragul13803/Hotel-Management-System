@@ -80,8 +80,6 @@ const SignIn = () => {
         navigate('/')
       }
     }
-    
-    
   });
 
   return (
