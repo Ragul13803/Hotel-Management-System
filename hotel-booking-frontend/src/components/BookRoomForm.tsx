@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { fetchRooms } from '../lib/rooms-api';
+import { fetchRooms } from '../lib/api-client';
 
 type BookingData = {
   guestName?: string;

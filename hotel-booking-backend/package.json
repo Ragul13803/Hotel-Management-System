@@ -2,11 +2,11 @@
   "name": "hotel-management-api",
   "version": "1.0.0",
   "description": "Minimal hotel management API (in-memory) for rooms and bookings",
-  "main": "backend/server.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "nodemon backend/server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "express",

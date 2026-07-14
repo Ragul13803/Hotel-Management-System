@@ -19,7 +19,7 @@ import { Label } from "../components/ui/label";
 import { Separator } from "../components/ui/separator";
 import { Badge } from "../components/ui/badge";
 import logo from '../../public/BOATEL.png'
-import { login } from "../lib/rooms-api";
+import { login } from "../lib/api-client";
 
 export type SignInFormData = {
   email: string;
@@ -62,25 +62,22 @@ const SignIn = () => {
   //   loadingMessage: "Signing you in...",
   // });
 
-  const onSubmit = handleSubmit( async (data) => {
-    setIsLoading(true);
-    // mutation.mutate(data, {
-    //   onSettled: () => setIsLoading(false),
-    // });
+  const onSubmit = handleSubmit(async (data) => {
+  setIsLoading(true);
 
-    try{
-      const response =await login(data)
-      console.log(response);
-      
-      if(response){
-        navigate('/dashboard');
-      }
-    }catch(e){
-      if(e){
-        navigate('/')
-      }
-    }
-  });
+  try {
+    const res: any = await login(data);
+
+    localStorage.setItem("token", res.token);
+    localStorage.setItem("user", JSON.stringify(res.user));
+
+    navigate("/dashboard");
+  } catch (err) {
+    navigate("/");
+  } finally {
+    setIsLoading(false);
+  }
+});
 
   return (
     <div className="flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">

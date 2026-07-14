@@ -7,6 +7,7 @@ import {
   PlusCircle,
   DollarSign,
   Calendar,
+  LogOut
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import {
@@ -14,13 +15,8 @@ import {
   DialogContent,
 } from "../components/ui/dialog";
 import BookRoomForm from "./BookRoomForm"; // ✅ Import your existing form
-import {
-  fetchRoomsSummary,
-  bookSpecificRoom,
-  updateBookedRoom,
-  checkoutRoom,
-  RoomsSummary,
-} from "../lib/rooms-api";
+import { RoomsSummary, fetchRoomsSummary, updateBookedRoom, bookSpecificRoom, checkoutRoom } from "../lib/api-client";
+import { useNavigate } from "react-router-dom";
 
 type Room = RoomsSummary["rooms"][number];
 type SummaryData = RoomsSummary;
@@ -34,6 +30,8 @@ const Dashboard = () => {
     message: string;
     type: "success" | "error";
   } | null>(null);
+  const navigate = useNavigate();
+  
 
   const fetchData = async () => {
     const json = await fetchRoomsSummary();
@@ -75,10 +73,12 @@ const Dashboard = () => {
     }
   };
 
-  const handleCheckout = async (roomId: number) => {
+  const handleCheckout = async (room: any) => {
+    console.log('room', room);
+    
     try {
-      await checkoutRoom(roomId);
-      showToast(`Room ${roomId} checked out successfully!`, "success");
+      await checkoutRoom(room?.number);
+      showToast(`Room ${room?.number} checked out successfully!`, "success");
       fetchData();
     } catch {
       showToast("Checkout failed.", "error");
@@ -127,6 +127,7 @@ const Dashboard = () => {
           <h1 className="text-4xl font-extrabold text-white tracking-tight">
             Admin Dashboard
           </h1>
+          <div className="flex gap-3">
           <Button
             onClick={() => {
               setMode("book");
@@ -138,6 +139,17 @@ const Dashboard = () => {
             <PlusCircle className="w-5 h-5" />
             Book Room
           </Button>
+          <Button
+            onClick={() => {
+              localStorage.clear();
+              navigate("/");
+            }}
+            className="bg-red-500 hover:bg-red-700 text-white flex items-center gap-2"
+          >
+            <LogOut className="w-5 h-5" />
+            Log Out
+          </Button>
+          </div>
         </div>
 
         {/* Stats Section */}
@@ -213,7 +225,7 @@ const Dashboard = () => {
                         </Button>
                         <Button
                           size="sm"
-                          onClick={() => handleCheckout(room.id)}
+                          onClick={() => handleCheckout(room)}
                           className="bg-red-500 hover:bg-red-600 text-white"
                         >
                           Checkout
