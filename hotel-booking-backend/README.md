@@ -52,5 +52,5 @@ backend/
 frontend/
   index.html       # Minimal admin UI
 .env               # Create from .env.example
-package.json       # Scripts point to backend/server.js
+package.json       # Scripts point to server.js
 ```

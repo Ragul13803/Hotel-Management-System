@@ -14,9 +14,12 @@ const RoomStatusCard: React.FC<RoomStatusCardProps> = ({
   const [roomsdata, setRoomsData] = useState({});
   console.log(roomsdata);
 
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
+
   const fetchRoomStatus = async () => {
-    const response = await fetch('http://localhost:3000/api/rooms/summary');
-    const data = await response.json();
+    const res = await fetch(`${apiBaseUrl}/api/rooms/summary`);
+    const data = await res.json();
     setRoomsData(data);
   };
 

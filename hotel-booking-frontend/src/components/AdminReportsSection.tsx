@@ -28,9 +28,10 @@ interface SummaryData {
 
 const AdminReportsSection = () => {
   const [data, setData] = useState<SummaryData | null>(null);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
   const fetchData = async () => {
-    const res = await fetch("http://localhost:3000/api/rooms/summary");
+    const res = await fetch(`${apiBaseUrl}/api/rooms/summary`);
     const json = await res.json();
     setData(json);
   };
