@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { checkoutRoom, fetchRooms, updateBookedRoom } from '../lib/rooms-api';
+import { checkoutRoom, fetchRooms, updateBookedRoom } from '../lib/api-client';
 
 type Props = {
   onChange?: () => void;
